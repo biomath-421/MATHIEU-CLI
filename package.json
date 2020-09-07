@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/biomath-421/Node.JS-CLI/issues"
   },
-  "homepage": "https://github.com/biomath-421/Node.JS-CLI#readme"
+  "homepage": "https://github.com/biomath-421/Node.JS-CLI#readme",
+  "dependencies": {
+    "axios": "^0.20.0"
+  }
 }
