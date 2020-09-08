@@ -1,6 +1,6 @@
 # Node.JS-CLI
 
-##install
+## install
 
-npm i @biomath-421/mb-holidates
+> npm i @biomath-421/mb-holidates
 
