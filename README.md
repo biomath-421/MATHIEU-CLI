@@ -11,3 +11,7 @@
 The Country must start with an uppercase
 
 If you don't enter a year, the current year will be displayed.
+
+## version
+
+- 1.1.0: first module
