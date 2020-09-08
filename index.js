@@ -1,58 +1,68 @@
 #!/usr/bin/env node
-const axios = require("axios");
-const countrylist = require("country-list");
-const chalk = require("chalk");
-const boxen = require("boxen");
-const ora = require("ora");
-const figlet = require("figlet");
 
+// Definitions of modules constants
+const axios = require('axios');
+const countryList = require('country-list');
+const chalk = require('chalk');
+const boxen = require('boxen');
+const ora = require('ora');
+var figlet = require('figlet');
+
+// Definitions of variables
 let args = process.argv.slice(2);
-var today = new Date();
-var yyyy = today.getFullYear();
-let chosenyear;
-let isacountry = false;
-const allcountries = countrylist.getNames();
-let countrycode;
+let currentDate = new Date();
+let currentYear = currentDate.getFullYear();
+let chosenYear;
+let isACountry = false;
+const allCountries = countryList.getNames();
+let countryCode;
 
+// Check if a second argument, the chosen year, has been given ; default is current year
 if (args[1] != null) {
-    chosenyear = args[1]
+    chosenYear = args[1];
 } else {
-    chosenyear = yyyy
-};
+    chosenYear = currentYear;
+}
 
-allcountries.forEach(Element => {
-    if (args[0] == Element) {
-        isacountry = true;
+// If chosen country exists, transform it onto a two-letters country code
+allCountries.forEach(element => {
+    if (args[0] == element) {
+        isACountry = true;
     }
 });
 
-if (isacountry) {
-    countrycode = countrylist.getCode();
+if (isACountry) {
+    countryCode = countryList.getCode(args[0]);
 } else {
-    console.log("Error: this is not a country name. /n Try again!")
-    return process.exit;
-};
+    console.log("The country name given does not exist.\nPlease try again.");
+    return process.exit();
+}
 
+// HTTP request to the API of the nager.date service
 async function axiosGetHolidaysForOneCountry(year, countryCode) {
     try {
         return await axios.get("https://date.nager.at/api/v2/publicholidays/" + year + "/" + countryCode);
     } catch (error) {
         console.error(error);
     }
-};
+}
 
-figlet("Welcome to holidates!", {
-    horizontalLayout: 'full',
-    verticalLayout: 'full',
-},
-    function (err, data) {
-        if (err) {
-            console.log("something goes wrong");
-            console.dir(err);
-            return;
-        }
-        console.log(data)
-    });
+// Print results
+
+// Title as figlet
+figlet("Welcome!",
+    {
+        horizontalLayout: 'full',
+        verticalLayout: 'full',
+    },
+    function(err, data) {
+    if (err) {
+        console.log('Something went wrong...');
+        console.dir(err);
+        return;
+    }
+    console.log(data);
+});
 
 axiosGetHolidaysForOneCountry(chosenYear, countryCode)
     .then(holidays => {
